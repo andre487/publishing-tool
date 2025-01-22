@@ -14,10 +14,13 @@ def prepare_plain_text(
     add_tabs: bool = False,
     upper_headers: bool = False,
     headers_spacing: bool = False,
+    remove_empty_lines: bool = False,
+    tab_size: int = 8,
 ):
     doc = docx.Document(doc_path)
     out = io.StringIO()
 
+    prev_has_text = True
     for par in doc.paragraphs:
         style_name = par.style.name
         if style_name.startswith('Heading'):
@@ -41,13 +44,20 @@ def prepare_plain_text(
                 print(file=out)
             continue
 
+        if remove_empty_lines and prev_has_text and (not par.text or par.text.isspace()):
+            prev_has_text = False
+            continue
+
+        prev_has_text = True
+
         if add_tabs:
-            print('    ', end='', file=out)
+            print('\xA0' * tab_size, end='', file=out)
+
         print(par.text, file=out)
         if add_empty_lines:
             print(file=out)
 
-    print(out.getvalue())
+    print(out.getvalue().rstrip())
 
 
 def partition(doc_path: str, out_dir: str):

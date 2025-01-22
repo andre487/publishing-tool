@@ -14,6 +14,8 @@ def main():
 @click.option('--add-tabs', '-t', is_flag=True)
 @click.option('--upper-headers', '-H', is_flag=True)
 @click.option('--headers-spacing', '-s', is_flag=True)
+@click.option('--remove-empty-lines', '-e', is_flag=True)
+@click.option('--tab-size', '-T', default=8)
 @click.argument('doc_path', type=click.Path(exists=True, file_okay=True, dir_okay=False))
 def plain_text(
     doc_path: str,
@@ -21,6 +23,8 @@ def plain_text(
     add_tabs: bool,
     upper_headers: bool,
     headers_spacing: bool,
+    remove_empty_lines: bool,
+    tab_size: int,
 ):
     logic.prepare_plain_text(
         doc_path,
@@ -28,6 +32,8 @@ def plain_text(
         add_tabs=add_tabs,
         upper_headers=upper_headers,
         headers_spacing=headers_spacing,
+        remove_empty_lines=remove_empty_lines,
+        tab_size=tab_size,
     )
 
 
