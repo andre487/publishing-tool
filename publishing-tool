@@ -31,5 +31,20 @@ def plain_text(
     )
 
 
+@main.command()
+@click.argument(
+    'doc_path',
+    type=click.Path(exists=True, file_okay=True, dir_okay=False),
+    required=True,
+)
+@click.argument(
+    'out_dir',
+    type=click.Path(exists=False, file_okay=False, dir_okay=True),
+    required=True,
+)
+def partition(doc_path: str, out_dir: str):
+    logic.partition(doc_path, out_dir)
+
+
 if __name__ == '__main__':
     main()
